@@ -4,7 +4,7 @@
     "description": "LINQ for TypeScript",
     "main": "index.js",
     "scripts": {
-        "build": "tsc --config tsconfig.build.json",
+        "build": "tsc --project tsconfig.build.json",
         "test": "jest --config jestconfig.json"
     },
     "repository": {
