@@ -206,7 +206,7 @@ describe("array", () => {
     test("except returns a new array with those items from the first array that aren't present in the second one", () => {
         const array = [1, 2, 3, 4, 5];
 
-        const result = array.except([2, 4]);
+        const result = array.except([2, 4, 8]);
 
         expect(result).toEqual([1, 3, 5]);
         expect(result).not.toBe(array);
@@ -344,6 +344,150 @@ describe("array", () => {
             { parentName: "B", childName: "X" },
             { parentName: "C", childName: "Y" }
         ]);
+    });
+
+    test("intersect returns a new array of elements present both in the first and the second array", () => {
+        const array = [1, 2, 3, 4, 5];
+        const second = [1, 5, 8];
+
+        const result = array.intersect(second);
+
+        expect(result).toEqual([1, 5]);
+        expect(result).not.toBe(array);
+    });
+
+    test("last returns last element of the array when the array contains elements and no predicate is provided", () => {
+        const array = [1, 2, 3, 4, 5];
+
+        const result = array.last();
+
+        expect(result).toBe(5);
+    });
+
+    test("last returns last element of the array that satisfied given predicate when such an element exists", () => {
+        const array = [1, 2, 3, 4, 5];
+        const predicate = (element: number) => element < 3;
+
+        const result = array.last(predicate);
+
+        expect(result).toBe(2);
+    });
+
+    test("last throws when the array is empty", () => {
+        const array = [] as Array<number>;
+
+        const action = () => array.last();
+
+        expect(action).toThrowError("The source sequence is empty");
+    });
+
+    test("last throws when no element satisfy a given predicate", () => {
+        const array = [1, 2, 3, 4, 5];
+        const predicate = (element: number) => element < 1;
+
+        const action = () => array.last(predicate);
+
+        expect(action).toThrowError("No element satisfies the condition in predicate");
+    });
+
+    test("lastOrUndefined returns last element of the array when the array contains elements and no predicate is provided", () => {
+        const array = [1, 2, 3, 4, 5];
+
+        const result = array.lastOrUndefined();
+
+        expect(result).toBe(5);
+    });
+
+    test("lastOrUndefined returns last element of the array that satisfied given predicate when such an element exists", () => {
+        const array = [1, 2, 3, 4, 5];
+        const predicate = (element: number) => element < 3;
+
+        const result = array.lastOrUndefined(predicate);
+
+        expect(result).toBe(2);
+    });
+
+    test("lastOrUndefined returns undefined when the array is empty", () => {
+        const array = [] as Array<number>;
+
+        const result = array.lastOrUndefined();
+
+        expect(result).toBe(undefined);
+    });
+
+    test("lastOrUndefined returns undefined when no element satisfy a given predicate", () => {
+        const array = [1, 2, 3, 4, 5];
+        const predicate = (element: number) => element < 1;
+
+        const result = array.lastOrUndefined(predicate);
+
+        expect(result).toBe(undefined);
+    });
+
+    test("max returns the largest number transformed with a given selector", () => {
+        const array = [{ key: "1", value: 10 }, { key: "2", value: 20 }, { key: "3", value: 50 }, { key: "4", value: 40 }];
+        const selector = (element: { value: number }) => element.value;
+
+        const result = array.max(selector);
+
+        expect(result).toBe(50);
+    });
+
+    test("max returns the largest number from array when a selector is not provided and all array elements are of number type", () => {
+        const array = [10, 20, 50, 40];
+
+        const result = array.max();
+
+        expect(result).toBe(50);
+    });
+
+    test("max throws an error when a selector is not provided and not all array elements are of number type", () => {
+        const array = [10, 20, 30, 40, "a"];
+
+        const action = () => array.max();
+
+        expect(action).toThrowError("All array elements must be numbers");
+    });
+
+    test("max throws an error when the array is empty", () => {
+        const array = [] as Array<number>;
+
+        const action = () => array.max();
+
+        expect(action).toThrowError("Sequence contains no elements");
+    });
+
+    test("min returns the smallest number transformed with a given selector", () => {
+        const array = [{ key: "1", value: 100 }, { key: "2", value: 20 }, { key: "3", value: 50 }, { key: "4", value: 40 }];
+        const selector = (element: { value: number }) => element.value;
+
+        const result = array.min(selector);
+
+        expect(result).toBe(20);
+    });
+
+    test("min returns the smallest number from array when a selector is not provided and all array elements are of number type", () => {
+        const array = [100, 20, 50, 40];
+
+        const result = array.min();
+
+        expect(result).toBe(20);
+    });
+
+    test("min throws an error when a selector is not provided and not all array elements are of number type", () => {
+        const array = [10, 20, 30, 40, "a"];
+
+        const action = () => array.min();
+
+        expect(action).toThrowError("All array elements must be numbers");
+    });
+
+    test("min throws an error when the array is empty", () => {
+        const array = [] as Array<number>;
+
+        const action = () => array.min();
+
+        expect(action).toThrowError("Sequence contains no elements");
     });
 
     test("sum returns sum of array elements transformed with a given selector", () => {

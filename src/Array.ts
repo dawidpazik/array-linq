@@ -33,6 +33,15 @@ interface Array<T> {
         innerKeySelector: (innerElement: TInner) => TKey,
         resultSelector: (element: T, innerElement: TInner) => TResult
     ): Array<TResult>;
+    intersect(second: Array<T>): Array<T>;
+    last(): T;
+    last(prdicate: (element: T) => boolean): T;
+    lastOrUndefined(): T | undefined;
+    lastOrUndefined(prdicate: (element: T) => boolean): T | undefined;
+    max(): number;
+    max(selector: (element: T) => number): number;
+    min(): number;
+    min(selector: (element: T) => number): number;
     sum(): number;
     sum(selector: (element: T) => number): number;
     where(predicate: (element: T) => boolean): Array<T>;
@@ -173,6 +182,7 @@ Array.prototype.groupJoin = function<T, TInner, TKey, TResult>(
 };
 
 Array.prototype.innerJoin = function<T, TInner, TKey, TResult>(
+    this: Array<T>,
     inner: Array<TInner>,
     outerKeySelector: (element: T) => TKey,
     innerKeySelector: (innerElement: TInner) => TKey,
@@ -189,6 +199,76 @@ Array.prototype.innerJoin = function<T, TInner, TKey, TResult>(
     });
 
     return result;
+};
+
+Array.prototype.intersect = function<T>(this: Array<T>, second: Array<T>) {
+    return this.filter((element: T) => second.includes(element));
+};
+
+Array.prototype.last = function<T>(this: Array<T>, predicate?: (element: T) => boolean): T {
+    if (this.length < 1) {
+        throw Error("The source sequence is empty");
+    }
+    if (predicate === undefined) {
+        return this[this.length - 1];
+    }
+
+    for (let i = this.length - 1; i >= 0; --i) {
+        if (predicate(this[i])) {
+            return this[i];
+        }
+    }
+
+    throw Error("No element satisfies the condition in predicate");
+};
+
+Array.prototype.lastOrUndefined = function<T>(this: Array<T>, predicate?: (element: T) => boolean): T | undefined {
+    if (this.length < 1) {
+        return undefined;
+    }
+    if (predicate === undefined) {
+        return this[this.length - 1];
+    }
+
+    for (let i = this.length - 1; i >= 0; --i) {
+        if (predicate(this[i])) {
+            return this[i];
+        }
+    }
+
+    return undefined;
+};
+
+Array.prototype.max = function<T>(this: Array<T>, selector?: (element: T) => number): number {
+    if (this.length < 1) {
+        throw new Error("Sequence contains no elements");
+    }
+
+    return selector !== undefined
+        ? this.reduce((accumulator: number, element: T) => Math.max(selector(element), accumulator), Number.MIN_VALUE)
+        : this.reduce((accumulator: number, element: T) => {
+              if (typeof element === "number") {
+                  return Math.max(element, accumulator);
+              } else {
+                  throw Error("All array elements must be numbers");
+              }
+          }, Number.MIN_VALUE);
+};
+
+Array.prototype.min = function<T>(this: Array<T>, selector?: (element: T) => number): number {
+    if (this.length < 1) {
+        throw new Error("Sequence contains no elements");
+    }
+
+    return selector !== undefined
+        ? this.reduce((accumulator: number, element: T) => Math.min(selector(element), accumulator), Number.MAX_VALUE)
+        : this.reduce((accumulator: number, element: T) => {
+              if (typeof element === "number") {
+                  return Math.min(element, accumulator);
+              } else {
+                  throw Error("All array elements must be numbers");
+              }
+          }, Number.MAX_VALUE);
 };
 
 Array.prototype.sum = function<T>(this: Array<T>, selector?: (element: T) => number): number {
