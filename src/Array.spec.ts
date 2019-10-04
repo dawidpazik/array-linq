@@ -490,6 +490,92 @@ describe("array", () => {
         expect(action).toThrowError("Sequence contains no elements");
     });
 
+    test("orderBy returns an array sorted by a key ascending", () => {
+        const array = [{ name: "A", value: 30 }, { name: "B", value: 10 }, { name: "C", value: 10 }, { name: "D", value: 20 }];
+        const keySelector = (element: { value: number }) => element.value;
+
+        const result = array.orderBy(keySelector);
+
+        expect(result).toEqual([
+            { name: "B", value: 10 },
+            { name: "C", value: 10 },
+            { name: "D", value: 20 },
+            { name: "A", value: 30 }
+        ]);
+        expect(result).not.toBe(array);
+    });
+
+    test("orderByDescending returns an array sorted by a key descending", () => {
+        const array = [{ name: "A", value: 30 }, { name: "B", value: 10 }, { name: "C", value: 10 }, { name: "D", value: 20 }];
+        const keySelector = (element: { value: number }) => element.value;
+
+        const result = array.orderByDescending(keySelector);
+
+        expect(result).toEqual([
+            { name: "A", value: 30 },
+            { name: "D", value: 20 },
+            { name: "B", value: 10 },
+            { name: "C", value: 10 }
+        ]);
+        expect(result).not.toBe(array);
+    });
+
+    test("prepend returns a new array with a given element prepended", () => {
+        const array = [1, 2, 3];
+
+        const result = array.prepend(4);
+
+        expect(result).toEqual([4, 1, 2, 3]);
+        expect(result).not.toBe(array);
+    });
+
+    test("reverseImmutable returns a new array with elements in reverse order", () => {
+        const array = [1, 2, 3, 4];
+
+        const result = array.reverseImmutable();
+
+        expect(result).toEqual([4, 3, 2, 1]);
+        expect(result).not.toBe(array);
+    });
+
+    test("select returns an array of selected properties for selector that doesn't use an element index", () => {
+        const array = [{ key: "1", value: 100 }, { key: "2", value: 20 }, { key: "3", value: 50 }, { key: "4", value: 40 }];
+        const selector = (element: { value: number }) => element.value;
+
+        const result = array.select(selector);
+
+        expect(result).toEqual([100, 20, 50, 40]);
+    });
+
+    test("select returns an array of selected properties for selector that uses an element index", () => {
+        const array = [{ key: "1", value: 100 }, { key: "2", value: 20 }, { key: "3", value: 50 }, { key: "4", value: 40 }];
+        const selector = (element: { value: number }, index: number) => element.value + index;
+
+        const result = array.select(selector);
+
+        expect(result).toEqual([100, 21, 52, 43]);
+    });
+
+    test("selectMany returns a flattened array of child elements for selector", () => {
+        const array = [{ key: 100, values: [10, 20, 30] }, { key: 200, values: [40, 50] }, { key: 300, values: [60, 70, 80] }];
+        const collectionSelector = (element: { values: number[] }) => element.values;
+        const resultSelector = (element: { key: number; values: number[] }, child: number) => element.key + child;
+
+        const result = array.selectMany(collectionSelector, resultSelector);
+
+        expect(result).toEqual([110, 120, 130, 240, 250, 360, 370, 380]);
+    });
+
+    test("selectMany returns a flattened array of child elements for selector that uses an element index", () => {
+        const array = [{ key: 100, values: [10, 20, 30] }, { key: 200, values: [40, 50] }, { key: 300, values: [60, 70, 80] }];
+        const collectionSelector = (element: { values: number[] }, index: number) => element.values.map((v: number) => v + index);
+        const resultSelector = (element: { key: number; values: number[] }, child: number) => element.key + child;
+
+        const result = array.selectMany(collectionSelector, resultSelector);
+
+        expect(result).toEqual([110, 120, 130, 241, 251, 362, 372, 382]);
+    });
+
     test("sum returns sum of array elements transformed with a given selector", () => {
         const array = [{ key: "1", value: 10 }, { key: "2", value: 20 }, { key: "3", value: 30 }, { key: "4", value: 40 }];
         const selector = (element: { value: number }) => element.value;

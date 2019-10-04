@@ -42,6 +42,15 @@ interface Array<T> {
     max(selector: (element: T) => number): number;
     min(): number;
     min(selector: (element: T) => number): number;
+    orderBy<TKey>(keySelector: (element: T) => TKey): Array<T>;
+    orderByDescending<TKey>(keySelector: (element: T) => TKey): Array<T>;
+    prepend(element: T): Array<T>;
+    reverseImmutable(): Array<T>;
+    select<TResult>(selector: (element: T, index: number) => TResult): Array<TResult>;
+    selectMany<TCollection, TResult>(
+        collectionSelector: (element: T, index: number) => Array<TCollection>,
+        resultSelector: (element: T, child: TCollection) => TResult
+    ): Array<TResult>;
     sum(): number;
     sum(selector: (element: T) => number): number;
     where(predicate: (element: T) => boolean): Array<T>;
@@ -269,6 +278,40 @@ Array.prototype.min = function<T>(this: Array<T>, selector?: (element: T) => num
                   throw Error("All array elements must be numbers");
               }
           }, Number.MAX_VALUE);
+};
+
+Array.prototype.orderBy = function<T, TKey>(this: Array<T>, keySelector: (element: T) => TKey): Array<T> {
+    return [...this].sort((a: T, b: T) => (keySelector(a) < keySelector(b) ? -1 : keySelector(a) > keySelector(b) ? 1 : 0));
+};
+
+Array.prototype.orderByDescending = function<T, TKey>(this: Array<T>, keySelector: (element: T) => TKey): Array<T> {
+    return [...this].sort((a: T, b: T) => (keySelector(a) < keySelector(b) ? 1 : keySelector(a) > keySelector(b) ? -1 : 0));
+};
+
+Array.prototype.prepend = function<T>(this: Array<T>, element: T): Array<T> {
+    return [element, ...this];
+};
+
+Array.prototype.reverseImmutable = function<T>(this: Array<T>): Array<T> {
+    return [...this].reverse();
+};
+
+Array.prototype.select = function<T, TResult>(this: Array<T>, selector: (element: T, index: number) => TResult): Array<TResult> {
+    return this.map((value: T, index: number) => selector(value, index));
+};
+
+Array.prototype.selectMany = function<T, TCollection, TResult>(
+    this: Array<T>,
+    collectionSelector: (element: T, index: number) => Array<TCollection>,
+    resultSelector: (element: T, child: TCollection) => TResult
+): Array<TResult> {
+    return this.reduce(
+        (previousValue: Array<TResult>, currentValue: T, currentIndex: number) => [
+            ...previousValue,
+            ...collectionSelector(currentValue, currentIndex).map((value: TCollection) => resultSelector(currentValue, value))
+        ],
+        []
+    );
 };
 
 Array.prototype.sum = function<T>(this: Array<T>, selector?: (element: T) => number): number {
