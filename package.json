@@ -1,6 +1,6 @@
 {
     "name": "array-linq",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "LINQ methods for TypeScript arrays",
     "main": "lib/Array.js",
     "types": "lib/Array.d.ts",
