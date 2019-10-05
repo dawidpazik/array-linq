@@ -1,5 +1,5 @@
 {
-    "name": "linq-ts",
+    "name": "array-linq",
     "version": "1.0.0",
     "description": "LINQ methods for TypeScript arrays",
     "main": "lib/Array.js",
@@ -17,7 +17,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/dawidpazik/linq-ts.git"
+        "url": "git+https://github.com/dawidpazik/array-linq.git"
     },
     "keywords": [
         "linq",
@@ -28,9 +28,9 @@
     "author": "Dawid Pazik",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/dawidpazik/linq-ts/issues"
+        "url": "https://github.com/dawidpazik/array-linq/issues"
     },
-    "homepage": "https://github.com/dawidpazik/linq-ts#readme",
+    "homepage": "https://github.com/dawidpazik/array-linq#readme",
     "devDependencies": {
         "@types/jest": "^24.0.18",
         "jest": "^24.9.0",
