@@ -576,6 +576,187 @@ describe("array", () => {
         expect(result).toEqual([110, 120, 130, 241, 251, 362, 372, 382]);
     });
 
+    test("sequenceEqual returns true when the same array is passed as a parameter", () => {
+        const array = [10, 20, 50, 40];
+
+        const result = array.sequenceEqual(array);
+
+        expect(result).toBeTruthy();
+    });
+
+    test("sequenceEqual returns true when arrays contain the same elements in the same order", () => {
+        const array = [10, 20, 50, 40];
+        const second = [10, 20, 50, 40];
+
+        const result = array.sequenceEqual(second);
+
+        expect(result).toBeTruthy();
+    });
+
+    test("sequenceEqual returns false when arrays have a different length", () => {
+        const array = [10, 20, 50, 40];
+        const second = [10, 20, 50, 40, 30];
+
+        const result = array.sequenceEqual(second);
+
+        expect(result).toBeFalsy();
+    });
+
+    test("sequenceEqual returns false when arrays differ at some index", () => {
+        const array = [10, 20, 50, 40];
+        const second = [10, 20, 55, 40];
+
+        const result = array.sequenceEqual(second);
+
+        expect(result).toBeFalsy();
+    });
+
+    test("single returns the only element of the array when the array contains only one element and no predicate is provided", () => {
+        const array = [2];
+
+        const result = array.single();
+
+        expect(result).toBe(2);
+    });
+
+    test("single returns the only element of the array that satisfied given predicate when such an element exists", () => {
+        const array = [1, 2, 3, 4, 5];
+        const predicate = (element: number) => element > 4;
+
+        const result = array.single(predicate);
+
+        expect(result).toBe(5);
+    });
+
+    test("single throws when the array is empty", () => {
+        const array = [] as Array<number>;
+
+        const action = () => array.single();
+
+        expect(action).toThrowError("The source sequence is empty");
+    });
+
+    test("single throws when no element satisfy a given predicate", () => {
+        const array = [1, 2, 3, 4, 5];
+        const predicate = (element: number) => element > 5;
+
+        const action = () => array.single(predicate);
+
+        expect(action).toThrowError("No element satisfies the condition in predicate");
+    });
+
+    test("single throws when no predicate is provied and the array contains more than one element", () => {
+        const array = [1, 2, 3, 4, 5];
+
+        const action = () => array.single();
+
+        expect(action).toThrowError("The input sequence contains more than one element");
+    });
+
+    test("single throws when a predicate is provied and the array contains more than one matching element", () => {
+        const array = [1, 2, 3, 4, 5];
+        const predicate = (element: number) => element > 3;
+
+        const action = () => array.single(predicate);
+
+        expect(action).toThrowError("More than one element satisfies the condition in predicate");
+    });
+
+    test("singleOrUndefined returns the only element of the array when the array contains only one element and no predicate is provided", () => {
+        const array = [2];
+
+        const result = array.singleOrUndefined();
+
+        expect(result).toBe(2);
+    });
+
+    test("singleOrUndefined returns the only element of the array that satisfied given predicate when such an element exists", () => {
+        const array = [1, 2, 3, 4, 5];
+        const predicate = (element: number) => element > 4;
+
+        const result = array.singleOrUndefined(predicate);
+
+        expect(result).toBe(5);
+    });
+
+    test("singleOrUndefined returns undefined when the array is empty", () => {
+        const array = [] as Array<number>;
+
+        const result = array.singleOrUndefined();
+
+        expect(result).toBe(undefined);
+    });
+
+    test("singleOrUndefined returns undefined when no element satisfy a given predicate", () => {
+        const array = [1, 2, 3, 4, 5];
+        const predicate = (element: number) => element > 5;
+
+        const result = array.singleOrUndefined(predicate);
+
+        expect(result).toBe(undefined);
+    });
+
+    test("singleOrUndefined throws when no predicate is provied and the array contains more than one element", () => {
+        const array = [1, 2, 3, 4, 5];
+
+        const action = () => array.singleOrUndefined();
+
+        expect(action).toThrowError("The input sequence contains more than one element");
+    });
+
+    test("singleOrUndefined throws when a predicate is provied and the array contains more than one matching element", () => {
+        const array = [1, 2, 3, 4, 5];
+        const predicate = (element: number) => element > 3;
+
+        const action = () => array.singleOrUndefined(predicate);
+
+        expect(action).toThrowError("More than one element satisfies the condition in predicate");
+    });
+
+    test("skip returns a new array without first count elements", () => {
+        const array = [1, 2, 3, 4, 5];
+
+        const result = array.skip(3);
+
+        expect(result).toEqual([4, 5]);
+        expect(result).not.toBe(array);
+    });
+
+    test("skipLast returns a new array without last count elements", () => {
+        const array = [1, 2, 3, 4, 5];
+
+        const result = array.skipLast(3);
+
+        expect(result).toEqual([1, 2]);
+        expect(result).not.toBe(array);
+    });
+
+    test("skipWhile returns a new array without first elements that satisfy a given predicate", () => {
+        const array = [1, 2, 3, 4, 5, 3];
+
+        const result = array.skipWhile((element: number) => element < 4);
+
+        expect(result).toEqual([4, 5, 3]);
+        expect(result).not.toBe(array);
+    });
+
+    test("skipWhile returns an empty array when all elements satisfy a given predicate", () => {
+        const array = [1, 2, 3, 4, 5];
+
+        const result = array.skipWhile((element: number) => element < 7);
+
+        expect(result).toEqual([]);
+        expect(result).not.toBe(array);
+    });
+
+    test("skipWhile returns an empty array when given array is empty", () => {
+        const array = [] as Array<number>;
+
+        const result = array.skipWhile((element: number) => element < 7);
+
+        expect(result).toEqual([]);
+    });
+
     test("sum returns sum of array elements transformed with a given selector", () => {
         const array = [{ key: "1", value: 10 }, { key: "2", value: 20 }, { key: "3", value: 30 }, { key: "4", value: 40 }];
         const selector = (element: { value: number }) => element.value;
@@ -607,6 +788,95 @@ describe("array", () => {
         const action = () => array.sum();
 
         expect(action).toThrowError("Sequence contains no elements");
+    });
+
+    test("take returns a new array with first count elements", () => {
+        const array = [1, 2, 3, 4, 5];
+
+        const result = array.take(3);
+
+        expect(result).toEqual([1, 2, 3]);
+        expect(result).not.toBe(array);
+    });
+
+    test("take returns an empty array when given array is empty", () => {
+        const array = [] as Array<number>;
+
+        const result = array.take(10);
+
+        expect(result).toEqual([]);
+    });
+
+    test("takeLast returns a new array with last count elements", () => {
+        const array = [1, 2, 3, 4, 5];
+
+        const result = array.takeLast(3);
+
+        expect(result).toEqual([3, 4, 5]);
+        expect(result).not.toBe(array);
+    });
+
+    test("takeWhile returns a new array with first elements that satisfy a given predicate", () => {
+        const array = [1, 2, 3, 4, 5, 3];
+
+        const result = array.takeWhile((element: number) => element < 4);
+
+        expect(result).toEqual([1, 2, 3]);
+        expect(result).not.toBe(array);
+    });
+
+    test("takeWhile returns an array with the same elements when all elements satisfy a given predicate", () => {
+        const array = [1, 2, 3, 4, 5];
+
+        const result = array.takeWhile((element: number) => element < 7);
+
+        expect(result).toEqual([1, 2, 3, 4, 5]);
+        expect(result).not.toBe(array);
+    });
+
+    test("takeWhile returns an empty array when given array is empty", () => {
+        const array = [] as Array<number>;
+
+        const result = array.takeWhile((element: number) => element < 7);
+
+        expect(result).toEqual([]);
+    });
+
+    test("toDictionary creates a map that stores key-value pairs selected by a given selectors", () => {
+        const array = [{ key: "1", value: 10 }, { key: "2", value: 20 }, { key: "3", value: 30 }, { key: "4", value: 40 }];
+        const keySelector = (element: { key: string }) => element.key;
+        const elementSelector = (element: { value: number }) => element.value;
+
+        const result = array.toDictionary(keySelector, elementSelector);
+
+        expect(result).toEqual(new Map([["1", 10], ["2", 20], ["3", 30], ["4", 40]]));
+    });
+
+    test("toHashSet creates a set that stores distinct items of the array", () => {
+        const array = [1, 1, 2, 3, 3, 4, 5, 5];
+
+        const result = array.toHashSet();
+
+        expect(result).toEqual(new Set([1, 2, 3, 4, 5]));
+    });
+
+    test("union returns an array that contains unique elements from both arrays", () => {
+        const array = [5, 3, 9, 7, 5, 9, 3, 7];
+        const second = [8, 3, 6, 4, 4, 9, 1, 0];
+
+        const result = array.union(second);
+
+        expect(result).toEqual([5, 3, 9, 7, 8, 6, 4, 1, 0]);
+    });
+
+    test("zip returns an array that contains pairs of elements at corresponding indexes transformed by a given selector", () => {
+        const array = [1, 2, 3, 4];
+        const second = ["one", "two", "three"];
+        const resultSelector = (firstElement: number, secondElement: string) => firstElement + " " + secondElement;
+
+        const result = array.zip(second, resultSelector);
+
+        expect(result).toEqual(["1 one", "2 two", "3 three"]);
     });
 
     test("where returns a new array with elements that satisfy a given condition", () => {

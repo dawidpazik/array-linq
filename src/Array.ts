@@ -51,9 +51,30 @@ interface Array<T> {
         collectionSelector: (element: T, index: number) => Array<TCollection>,
         resultSelector: (element: T, child: TCollection) => TResult
     ): Array<TResult>;
+    sequenceEqual(second: Array<T>): boolean;
+    single(): T;
+    single(prdicate: (element: T) => boolean): T;
+    singleOrUndefined(): T | undefined;
+    singleOrUndefined(prdicate: (element: T) => boolean): T | undefined;
+    skip(count: number): Array<T>;
+    skipLast(count: number): Array<T>;
+    skipWhile(predicate: (element: T) => boolean): Array<T>;
+    take(count: number): Array<T>;
+    takeLast(count: number): Array<T>;
+    takeWhile(predicate: (element: T) => boolean): Array<T>;
     sum(): number;
     sum(selector: (element: T) => number): number;
+    toDictionary<TKey, TElement>(
+        keySelector: (element: T) => TKey,
+        elementSelector: (element: T) => TElement
+    ): Map<TKey, TElement>;
+    toHashSet(): Set<T>;
+    union(second: Array<T>): Array<T>;
     where(predicate: (element: T) => boolean): Array<T>;
+    zip<TSecond, TResult>(
+        second: Array<TSecond>,
+        resultSelector: (firstElement: T, secondElement: TSecond) => TResult
+    ): Array<TResult>;
 }
 
 Array.prototype.aggregate = function<T, TAccumulate, TResult>(
@@ -306,12 +327,109 @@ Array.prototype.selectMany = function<T, TCollection, TResult>(
     resultSelector: (element: T, child: TCollection) => TResult
 ): Array<TResult> {
     return this.reduce(
-        (previousValue: Array<TResult>, currentValue: T, currentIndex: number) => [
-            ...previousValue,
+        (accumulator: Array<TResult>, currentValue: T, currentIndex: number) => [
+            ...accumulator,
             ...collectionSelector(currentValue, currentIndex).map((value: TCollection) => resultSelector(currentValue, value))
         ],
         []
     );
+};
+
+Array.prototype.sequenceEqual = function<T>(second: Array<T>): boolean {
+    if (this === second) {
+        return true;
+    }
+    if (this.length !== second.length) {
+        return false;
+    }
+
+    for (let i = 0; i < this.length; ++i) {
+        if (this[i] !== second[i]) {
+            return false;
+        }
+    }
+
+    return true;
+};
+
+Array.prototype.single = function<T>(this: Array<T>, predicate?: (element: T) => boolean): T {
+    if (this.length < 1) {
+        throw Error("The source sequence is empty");
+    }
+    if (predicate === undefined) {
+        if (this.length > 1) {
+            throw Error("The input sequence contains more than one element");
+        }
+        return this[0];
+    }
+
+    const matchingElements = this.filter(predicate);
+
+    switch (matchingElements.length) {
+        case 1:
+            return matchingElements[0];
+        case 0:
+            throw Error("No element satisfies the condition in predicate");
+        default:
+            throw Error("More than one element satisfies the condition in predicate");
+    }
+};
+
+Array.prototype.singleOrUndefined = function<T>(this: Array<T>, predicate?: (element: T) => boolean): T | undefined {
+    if (this.length < 1) {
+        return undefined;
+    }
+    if (predicate === undefined) {
+        if (this.length > 1) {
+            throw Error("The input sequence contains more than one element");
+        }
+        return this[0];
+    }
+
+    const matchingElements = this.filter(predicate);
+
+    switch (matchingElements.length) {
+        case 1:
+            return matchingElements[0];
+        case 0:
+            return undefined;
+        default:
+            throw Error("More than one element satisfies the condition in predicate");
+    }
+};
+
+Array.prototype.skip = function<T>(this: Array<T>, count: number): Array<T> {
+    return this.slice(count);
+};
+
+Array.prototype.skipLast = function<T>(this: Array<T>, count: number): Array<T> {
+    return this.slice(0, this.length - count);
+};
+
+Array.prototype.skipWhile = function<T>(predicate: (element: T) => boolean): Array<T> {
+    let i = 0;
+    while (i < this.length && predicate(this[i++]));
+    if (i >= this.length) {
+        return [];
+    }
+    return this.slice(i - 1);
+};
+
+Array.prototype.take = function<T>(this: Array<T>, count: number): Array<T> {
+    return this.slice(0, count);
+};
+
+Array.prototype.takeLast = function<T>(this: Array<T>, count: number): Array<T> {
+    return this.slice(this.length - count, this.length);
+};
+
+Array.prototype.takeWhile = function<T>(predicate: (element: T) => boolean): Array<T> {
+    let i = 0;
+    while (i < this.length && predicate(this[i++]));
+    if (i >= this.length) {
+        return [...this];
+    }
+    return this.slice(0, i - 1);
 };
 
 Array.prototype.sum = function<T>(this: Array<T>, selector?: (element: T) => number): number {
@@ -330,6 +448,40 @@ Array.prototype.sum = function<T>(this: Array<T>, selector?: (element: T) => num
           }, 0);
 };
 
+Array.prototype.toDictionary = function<T, TKey, TElement>(
+    this: Array<T>,
+    keySelector: (element: T) => TKey,
+    elementSelector: (element: T) => TElement
+): Map<TKey, TElement> {
+    return new Map(this.map((element: T) => [keySelector(element), elementSelector(element)]));
+};
+
+Array.prototype.toHashSet = function<T>(this: Array<T>): Set<T> {
+    return new Set(this);
+};
+
+Array.prototype.union = function<T>(this: Array<T>, second: Array<T>): Array<T> {
+    return second.reduce(
+        (accumulator: Array<T>, currentValue: T) =>
+            accumulator.includes(currentValue) ? accumulator : [...accumulator, currentValue],
+        [...new Set(this)]
+    );
+};
+
 Array.prototype.where = function<T>(this: Array<T>, predicate: (element: T) => boolean): Array<T> {
     return this.filter(element => predicate(element));
+};
+
+Array.prototype.zip = function<T, TSecond, TResult>(
+    this: Array<T>,
+    second: Array<TSecond>,
+    resultSelector: (firstElement: T, secondElement: TSecond) => TResult
+): Array<TResult> {
+    const result = [] as Array<TResult>;
+
+    for (let i = 0; i < this.length && i < second.length; ++i) {
+        result.push(resultSelector(this[i], second[i]));
+    }
+
+    return result;
 };
