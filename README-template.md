@@ -10,6 +10,24 @@
 | --------------------------------------------- | ----------------------------------------- | ------------------------------------------- | ----------------------------------- | ----------------------------------------------- |
 | ![Statements](#statements# "Make me better!") | ![Branches](#branches# "Make me better!") | ![Functions](#functions# "Make me better!") | ![Lines](#lines# "Make me better!") | ![BuildStatus](#buildstatus# "Building Status") |
 
+### Usage ###
+
+```sh
+npm install array-linq
+```
+
+```ts
+import "array-linq"
+```
+
+```ts
+array
+    .where(item => item.value < 10)
+    .selectMany(item => item.children, (i, c) => ({ item: i, child: c }))
+    .select(x => x.item.value * 10 + x.child.value)
+    .average();
+```
+
 ### Available methods ###
 
 ```ts

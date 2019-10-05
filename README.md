@@ -10,6 +10,24 @@
 | --------------------------------------------- | ----------------------------------------- | ------------------------------------------- | ----------------------------------- | ----------------------------------------------- |
 | ![Statements](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg "Make me better!") | ![Branches](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg "Make me better!") | ![Functions](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg "Make me better!") | ![Lines](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg "Make me better!") | ![BuildStatus](https://img.shields.io/badge/Build-Passing-brightgreen.svg "Building Status") |
 
+### Usage ###
+
+```sh
+npm install array-linq
+```
+
+```ts
+import "array-linq"
+```
+
+```ts
+array
+    .where(item => item.value < 10)
+    .selectMany(item => item.children, (i, c) => ({ item: i, child: c }))
+    .select(x => x.item.value * 10 + x.child.value)
+    .average();
+```
+
 ### Available methods ###
 
 ```ts
