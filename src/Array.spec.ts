@@ -2,7 +2,12 @@ import "Array.ts";
 
 describe("array", () => {
     test("aggregate returns correct aggregated value transformed with a given result selector", () => {
-        const array = [{ key: "1", value: 10 }, { key: "2", value: 20 }, { key: "3", value: 30 }, { key: "4", value: 40 }];
+        const array = [
+            { key: "1", value: 10 },
+            { key: "2", value: 20 },
+            { key: "3", value: 30 },
+            { key: "4", value: 40 }
+        ];
         const seed = 1;
         const func = (accumulator: number, element: { value: number }) => accumulator + element.value;
         const resultSelector = (accumulator: number) => accumulator + 3;
@@ -58,7 +63,12 @@ describe("array", () => {
     });
 
     test("average returns average of array elements transformed with a given selector", () => {
-        const array = [{ key: "1", value: 10 }, { key: "2", value: 20 }, { key: "3", value: 30 }, { key: "4", value: 40 }];
+        const array = [
+            { key: "1", value: 10 },
+            { key: "2", value: 20 },
+            { key: "3", value: 30 },
+            { key: "4", value: 40 }
+        ];
         const selector = (element: { value: number }) => element.value;
 
         const result = array.average(selector);
@@ -83,7 +93,7 @@ describe("array", () => {
     });
 
     test("average throws an error when the array is empty", () => {
-        const array = [] as Array<number>;
+        const array = [] as number[];
 
         const action = () => array.average();
 
@@ -115,7 +125,7 @@ describe("array", () => {
     });
 
     test("defaultIfEmpty returns array with a given default element when the source array is empty", () => {
-        const array = [] as Array<number>;
+        const array = [] as number[];
 
         const result = array.defultIfEmpty(3);
 
@@ -230,7 +240,7 @@ describe("array", () => {
     });
 
     test("first throws when the array is empty", () => {
-        const array = [] as Array<number>;
+        const array = [] as number[];
 
         const action = () => array.first();
 
@@ -264,7 +274,7 @@ describe("array", () => {
     });
 
     test("firstOrUndefined returns undefined when the array is empty", () => {
-        const array = [] as Array<number>;
+        const array = [] as number[];
 
         const result = array.firstOrUndefined();
 
@@ -374,7 +384,7 @@ describe("array", () => {
     });
 
     test("last throws when the array is empty", () => {
-        const array = [] as Array<number>;
+        const array = [] as number[];
 
         const action = () => array.last();
 
@@ -408,7 +418,7 @@ describe("array", () => {
     });
 
     test("lastOrUndefined returns undefined when the array is empty", () => {
-        const array = [] as Array<number>;
+        const array = [] as number[];
 
         const result = array.lastOrUndefined();
 
@@ -425,7 +435,12 @@ describe("array", () => {
     });
 
     test("max returns the largest number transformed with a given selector", () => {
-        const array = [{ key: "1", value: 10 }, { key: "2", value: 20 }, { key: "3", value: 50 }, { key: "4", value: 40 }];
+        const array = [
+            { key: "1", value: 10 },
+            { key: "2", value: 20 },
+            { key: "3", value: 50 },
+            { key: "4", value: 40 }
+        ];
         const selector = (element: { value: number }) => element.value;
 
         const result = array.max(selector);
@@ -450,7 +465,7 @@ describe("array", () => {
     });
 
     test("max throws an error when the array is empty", () => {
-        const array = [] as Array<number>;
+        const array = [] as number[];
 
         const action = () => array.max();
 
@@ -458,7 +473,12 @@ describe("array", () => {
     });
 
     test("min returns the smallest number transformed with a given selector", () => {
-        const array = [{ key: "1", value: 100 }, { key: "2", value: 20 }, { key: "3", value: 50 }, { key: "4", value: 40 }];
+        const array = [
+            { key: "1", value: 100 },
+            { key: "2", value: 20 },
+            { key: "3", value: 50 },
+            { key: "4", value: 40 }
+        ];
         const selector = (element: { value: number }) => element.value;
 
         const result = array.min(selector);
@@ -483,7 +503,7 @@ describe("array", () => {
     });
 
     test("min throws an error when the array is empty", () => {
-        const array = [] as Array<number>;
+        const array = [] as number[];
 
         const action = () => array.min();
 
@@ -491,7 +511,12 @@ describe("array", () => {
     });
 
     test("orderBy returns an array sorted by a key ascending", () => {
-        const array = [{ name: "A", value: 30 }, { name: "B", value: 10 }, { name: "C", value: 10 }, { name: "D", value: 20 }];
+        const array = [
+            { name: "A", value: 30 },
+            { name: "B", value: 10 },
+            { name: "C", value: 10 },
+            { name: "D", value: 20 }
+        ];
         const keySelector = (element: { value: number }) => element.value;
 
         const result = array.orderBy(keySelector);
@@ -506,7 +531,12 @@ describe("array", () => {
     });
 
     test("orderByDescending returns an array sorted by a key descending", () => {
-        const array = [{ name: "A", value: 30 }, { name: "B", value: 10 }, { name: "C", value: 10 }, { name: "D", value: 20 }];
+        const array = [
+            { name: "A", value: 30 },
+            { name: "B", value: 10 },
+            { name: "C", value: 10 },
+            { name: "D", value: 20 }
+        ];
         const keySelector = (element: { value: number }) => element.value;
 
         const result = array.orderByDescending(keySelector);
@@ -539,7 +569,12 @@ describe("array", () => {
     });
 
     test("select returns an array of selected properties for selector that doesn't use an element index", () => {
-        const array = [{ key: "1", value: 100 }, { key: "2", value: 20 }, { key: "3", value: 50 }, { key: "4", value: 40 }];
+        const array = [
+            { key: "1", value: 100 },
+            { key: "2", value: 20 },
+            { key: "3", value: 50 },
+            { key: "4", value: 40 }
+        ];
         const selector = (element: { value: number }) => element.value;
 
         const result = array.select(selector);
@@ -548,7 +583,12 @@ describe("array", () => {
     });
 
     test("select returns an array of selected properties for selector that uses an element index", () => {
-        const array = [{ key: "1", value: 100 }, { key: "2", value: 20 }, { key: "3", value: 50 }, { key: "4", value: 40 }];
+        const array = [
+            { key: "1", value: 100 },
+            { key: "2", value: 20 },
+            { key: "3", value: 50 },
+            { key: "4", value: 40 }
+        ];
         const selector = (element: { value: number }, index: number) => element.value + index;
 
         const result = array.select(selector);
@@ -557,7 +597,11 @@ describe("array", () => {
     });
 
     test("selectMany returns a flattened array of child elements for selector", () => {
-        const array = [{ key: 100, values: [10, 20, 30] }, { key: 200, values: [40, 50] }, { key: 300, values: [60, 70, 80] }];
+        const array = [
+            { key: 100, values: [10, 20, 30] },
+            { key: 200, values: [40, 50] },
+            { key: 300, values: [60, 70, 80] }
+        ];
         const collectionSelector = (element: { values: number[] }) => element.values;
         const resultSelector = (element: { key: number; values: number[] }, child: number) => element.key + child;
 
@@ -567,8 +611,13 @@ describe("array", () => {
     });
 
     test("selectMany returns a flattened array of child elements for selector that uses an element index", () => {
-        const array = [{ key: 100, values: [10, 20, 30] }, { key: 200, values: [40, 50] }, { key: 300, values: [60, 70, 80] }];
-        const collectionSelector = (element: { values: number[] }, index: number) => element.values.map((v: number) => v + index);
+        const array = [
+            { key: 100, values: [10, 20, 30] },
+            { key: 200, values: [40, 50] },
+            { key: 300, values: [60, 70, 80] }
+        ];
+        const collectionSelector = (element: { values: number[] }, index: number) =>
+            element.values.map((v: number) => v + index);
         const resultSelector = (element: { key: number; values: number[] }, child: number) => element.key + child;
 
         const result = array.selectMany(collectionSelector, resultSelector);
@@ -629,7 +678,7 @@ describe("array", () => {
     });
 
     test("single throws when the array is empty", () => {
-        const array = [] as Array<number>;
+        const array = [] as number[];
 
         const action = () => array.single();
 
@@ -680,7 +729,7 @@ describe("array", () => {
     });
 
     test("singleOrUndefined returns undefined when the array is empty", () => {
-        const array = [] as Array<number>;
+        const array = [] as number[];
 
         const result = array.singleOrUndefined();
 
@@ -750,7 +799,7 @@ describe("array", () => {
     });
 
     test("skipWhile returns an empty array when given array is empty", () => {
-        const array = [] as Array<number>;
+        const array = [] as number[];
 
         const result = array.skipWhile((element: number) => element < 7);
 
@@ -758,7 +807,12 @@ describe("array", () => {
     });
 
     test("sum returns sum of array elements transformed with a given selector", () => {
-        const array = [{ key: "1", value: 10 }, { key: "2", value: 20 }, { key: "3", value: 30 }, { key: "4", value: 40 }];
+        const array = [
+            { key: "1", value: 10 },
+            { key: "2", value: 20 },
+            { key: "3", value: 30 },
+            { key: "4", value: 40 }
+        ];
         const selector = (element: { value: number }) => element.value;
 
         const result = array.sum(selector);
@@ -783,7 +837,7 @@ describe("array", () => {
     });
 
     test("sum throws an error when the array is empty", () => {
-        const array = [] as Array<number>;
+        const array = [] as number[];
 
         const action = () => array.sum();
 
@@ -800,7 +854,7 @@ describe("array", () => {
     });
 
     test("take returns an empty array when given array is empty", () => {
-        const array = [] as Array<number>;
+        const array = [] as number[];
 
         const result = array.take(10);
 
@@ -835,7 +889,7 @@ describe("array", () => {
     });
 
     test("takeWhile returns an empty array when given array is empty", () => {
-        const array = [] as Array<number>;
+        const array = [] as number[];
 
         const result = array.takeWhile((element: number) => element < 7);
 
@@ -843,7 +897,12 @@ describe("array", () => {
     });
 
     test("toDictionary creates a map that stores key-value pairs selected by a given selectors", () => {
-        const array = [{ key: "1", value: 10 }, { key: "2", value: 20 }, { key: "3", value: 30 }, { key: "4", value: 40 }];
+        const array = [
+            { key: "1", value: 10 },
+            { key: "2", value: 20 },
+            { key: "3", value: 30 },
+            { key: "4", value: 40 }
+        ];
         const keySelector = (element: { key: string }) => element.key;
         const elementSelector = (element: { value: number }) => element.value;
 

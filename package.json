@@ -1,19 +1,32 @@
 {
     "name": "linq-ts",
     "version": "1.0.0",
-    "description": "LINQ for TypeScript",
-    "main": "index.js",
+    "description": "LINQ methods for TypeScript arrays",
+    "main": "lib/Array.js",
+    "types": "lib/Array.d.ts",
     "scripts": {
         "build": "tsc --project tsconfig.build.json",
-        "test": "jest --config jestconfig.json"
+        "test": "jest --config jestconfig.json",
+        "format": "prettier --write \"src/**/*.ts\"",
+        "lint": "tslint -p tsconfig.json",
+        "prepare": "npm run build",
+        "prepublishOnly": "npm run test && npm run lint",
+        "preversion": "npm run lint",
+        "version": "npm run format && git add -A src",
+        "postversion": "git push && git push --tags"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/dawidpazik/linq-ts.git"
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
+    "keywords": [
+        "linq",
+        "typescript",
+        "array",
+        "enumerable"
+    ],
+    "author": "Dawid Pazik",
+    "license": "MIT",
     "bugs": {
         "url": "https://github.com/dawidpazik/linq-ts/issues"
     },
@@ -21,7 +34,13 @@
     "devDependencies": {
         "@types/jest": "^24.0.18",
         "jest": "^24.9.0",
+        "prettier": "^1.18.2",
         "ts-jest": "^24.1.0",
+        "tslint": "^5.20.0",
+        "tslint-config-prettier": "^1.18.0",
         "typescript": "^3.6.3"
-    }
+    },
+    "files": [
+        "lib/**/*"
+    ]
 }
