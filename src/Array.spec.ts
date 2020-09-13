@@ -6,7 +6,7 @@ describe("array", () => {
             { key: "1", value: 10 },
             { key: "2", value: 20 },
             { key: "3", value: 30 },
-            { key: "4", value: 40 }
+            { key: "4", value: 40 },
         ];
         const seed = 1;
         const func = (accumulator: number, element: { value: number }) => accumulator + element.value;
@@ -67,7 +67,7 @@ describe("array", () => {
             { key: "1", value: 10 },
             { key: "2", value: 20 },
             { key: "3", value: 30 },
-            { key: "4", value: 40 }
+            { key: "4", value: 40 },
         ];
         const selector = (element: { value: number }) => element.value;
 
@@ -300,7 +300,12 @@ describe("array", () => {
 
         const result = array.groupBy(keySelector);
 
-        expect(result).toEqual(new Map([["1", [element1, element4]], ["2", [element2, element3]]]));
+        expect(result).toEqual(
+            new Map([
+                ["1", [element1, element4]],
+                ["2", [element2, element3]],
+            ])
+        );
     });
 
     test("groupJoin returns proper array of result elements from joined arrays", () => {
@@ -317,15 +322,15 @@ describe("array", () => {
         const innerKeySelector = (element: { name: string; parent: { name: string; value: number } }) => element.parent;
         const resultSelector = (
             outerElement: { name: string; value: number },
-            innerElements: Array<{ name: string; parent: { name: string; value: number } }>
-        ) => ({ parentName: outerElement.name, childrenNames: innerElements.map(x => x.name) });
+            innerElements: { name: string; parent: { name: string; value: number } }[]
+        ) => ({ parentName: outerElement.name, childrenNames: innerElements.map((x) => x.name) });
 
         const result = outerArray.groupJoin(innerArray, outerKeySelector, innerKeySelector, resultSelector);
 
         expect(result).toEqual([
             { parentName: "A", childrenNames: ["Z"] },
             { parentName: "B", childrenNames: ["W", "X"] },
-            { parentName: "C", childrenNames: ["Y"] }
+            { parentName: "C", childrenNames: ["Y"] },
         ]);
     });
 
@@ -352,7 +357,7 @@ describe("array", () => {
             { parentName: "A", childName: "Z" },
             { parentName: "B", childName: "W" },
             { parentName: "B", childName: "X" },
-            { parentName: "C", childName: "Y" }
+            { parentName: "C", childName: "Y" },
         ]);
     });
 
@@ -439,7 +444,7 @@ describe("array", () => {
             { key: "1", value: 10 },
             { key: "2", value: 20 },
             { key: "3", value: 50 },
-            { key: "4", value: 40 }
+            { key: "4", value: 40 },
         ];
         const selector = (element: { value: number }) => element.value;
 
@@ -477,7 +482,7 @@ describe("array", () => {
             { key: "1", value: 100 },
             { key: "2", value: 20 },
             { key: "3", value: 50 },
-            { key: "4", value: 40 }
+            { key: "4", value: 40 },
         ];
         const selector = (element: { value: number }) => element.value;
 
@@ -515,7 +520,7 @@ describe("array", () => {
             { name: "A", value: 30 },
             { name: "B", value: 10 },
             { name: "C", value: 10 },
-            { name: "D", value: 20 }
+            { name: "D", value: 20 },
         ];
         const keySelector = (element: { value: number }) => element.value;
 
@@ -525,7 +530,7 @@ describe("array", () => {
             { name: "B", value: 10 },
             { name: "C", value: 10 },
             { name: "D", value: 20 },
-            { name: "A", value: 30 }
+            { name: "A", value: 30 },
         ]);
         expect(result).not.toBe(array);
     });
@@ -535,7 +540,7 @@ describe("array", () => {
             { name: "A", value: 30 },
             { name: "B", value: 10 },
             { name: "C", value: 10 },
-            { name: "D", value: 20 }
+            { name: "D", value: 20 },
         ];
         const keySelector = (element: { value: number }) => element.value;
 
@@ -545,7 +550,7 @@ describe("array", () => {
             { name: "A", value: 30 },
             { name: "D", value: 20 },
             { name: "B", value: 10 },
-            { name: "C", value: 10 }
+            { name: "C", value: 10 },
         ]);
         expect(result).not.toBe(array);
     });
@@ -573,7 +578,7 @@ describe("array", () => {
             { key: "1", value: 100 },
             { key: "2", value: 20 },
             { key: "3", value: 50 },
-            { key: "4", value: 40 }
+            { key: "4", value: 40 },
         ];
         const selector = (element: { value: number }) => element.value;
 
@@ -587,7 +592,7 @@ describe("array", () => {
             { key: "1", value: 100 },
             { key: "2", value: 20 },
             { key: "3", value: 50 },
-            { key: "4", value: 40 }
+            { key: "4", value: 40 },
         ];
         const selector = (element: { value: number }, index: number) => element.value + index;
 
@@ -600,7 +605,7 @@ describe("array", () => {
         const array = [
             { key: 100, values: [10, 20, 30] },
             { key: 200, values: [40, 50] },
-            { key: 300, values: [60, 70, 80] }
+            { key: 300, values: [60, 70, 80] },
         ];
         const collectionSelector = (element: { values: number[] }) => element.values;
         const resultSelector = (element: { key: number; values: number[] }, child: number) => element.key + child;
@@ -614,7 +619,7 @@ describe("array", () => {
         const array = [
             { key: 100, values: [10, 20, 30] },
             { key: 200, values: [40, 50] },
-            { key: 300, values: [60, 70, 80] }
+            { key: 300, values: [60, 70, 80] },
         ];
         const collectionSelector = (element: { values: number[] }, index: number) =>
             element.values.map((v: number) => v + index);
@@ -811,7 +816,7 @@ describe("array", () => {
             { key: "1", value: 10 },
             { key: "2", value: 20 },
             { key: "3", value: 30 },
-            { key: "4", value: 40 }
+            { key: "4", value: 40 },
         ];
         const selector = (element: { value: number }) => element.value;
 
@@ -901,14 +906,21 @@ describe("array", () => {
             { key: "1", value: 10 },
             { key: "2", value: 20 },
             { key: "3", value: 30 },
-            { key: "4", value: 40 }
+            { key: "4", value: 40 },
         ];
         const keySelector = (element: { key: string }) => element.key;
         const elementSelector = (element: { value: number }) => element.value;
 
         const result = array.toDictionary(keySelector, elementSelector);
 
-        expect(result).toEqual(new Map([["1", 10], ["2", 20], ["3", 30], ["4", 40]]));
+        expect(result).toEqual(
+            new Map([
+                ["1", 10],
+                ["2", 20],
+                ["3", 30],
+                ["4", 40],
+            ])
+        );
     });
 
     test("toHashSet creates a set that stores distinct items of the array", () => {

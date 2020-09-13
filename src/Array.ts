@@ -77,7 +77,7 @@ interface Array<T> {
     ): TResult[];
 }
 
-Array.prototype.aggregate = function<T, TAccumulate, TResult>(
+Array.prototype.aggregate = function <T, TAccumulate, TResult>(
     this: T[],
     seed: TAccumulate,
     func: (accumulator: TAccumulate, element: T) => TAccumulate,
@@ -86,19 +86,19 @@ Array.prototype.aggregate = function<T, TAccumulate, TResult>(
     return resultSelector(this.reduce((accumulator: TAccumulate, element: T) => func(accumulator, element), seed));
 };
 
-Array.prototype.all = function<T>(this: T[], predicate: (element: T) => boolean): boolean {
-    return this.every(element => predicate(element));
+Array.prototype.all = function <T>(this: T[], predicate: (element: T) => boolean): boolean {
+    return this.every((element) => predicate(element));
 };
 
-Array.prototype.any = function<T>(this: T[], predicate: (element: T) => boolean): boolean {
+Array.prototype.any = function <T>(this: T[], predicate: (element: T) => boolean): boolean {
     return this.some(predicate);
 };
 
-Array.prototype.append = function<T>(this: T[], element: T): T[] {
+Array.prototype.append = function <T>(this: T[], element: T): T[] {
     return [...this, element];
 };
 
-Array.prototype.average = function<T>(this: T[], selector?: (element: T) => number): number {
+Array.prototype.average = function <T>(this: T[], selector?: (element: T) => number): number {
     if (this.length < 1) {
         throw new Error("Sequence contains no elements");
     }
@@ -106,23 +106,23 @@ Array.prototype.average = function<T>(this: T[], selector?: (element: T) => numb
     return (selector !== undefined ? this.sum(selector) : this.sum()) / this.length;
 };
 
-Array.prototype.contains = function<T>(this: T[], element: T): boolean {
+Array.prototype.contains = function <T>(this: T[], element: T): boolean {
     return this.includes(element);
 };
 
-Array.prototype.count = function<T>(this: T[]): number {
+Array.prototype.count = function <T>(this: T[]): number {
     return this.length;
 };
 
-Array.prototype.defultIfEmpty = function<T>(this: T[], defaultValue: T): T[] {
+Array.prototype.defultIfEmpty = function <T>(this: T[], defaultValue: T): T[] {
     return this.length > 0 ? this : [defaultValue];
 };
 
-Array.prototype.distinct = function<T>(this: T[]): T[] {
+Array.prototype.distinct = function <T>(this: T[]): T[] {
     return [...new Set(this)];
 };
 
-Array.prototype.elementAt = function<T>(this: T[], index: number): T {
+Array.prototype.elementAt = function <T>(this: T[], index: number): T {
     if (index < 0 || index >= this.length) {
         throw new Error("Index out of range");
     }
@@ -130,7 +130,7 @@ Array.prototype.elementAt = function<T>(this: T[], index: number): T {
     return this[index];
 };
 
-Array.prototype.elementAtOrUndefined = function<T>(this: T[], index: number): T | undefined {
+Array.prototype.elementAtOrUndefined = function <T>(this: T[], index: number): T | undefined {
     if (index < 0 || index >= this.length) {
         return undefined;
     }
@@ -138,11 +138,11 @@ Array.prototype.elementAtOrUndefined = function<T>(this: T[], index: number): T 
     return this[index];
 };
 
-Array.prototype.except = function<T>(this: T[], second: T[]): T[] {
-    return this.filter(element => !second.includes(element));
+Array.prototype.except = function <T>(this: T[], second: T[]): T[] {
+    return this.filter((element) => !second.includes(element));
 };
 
-Array.prototype.first = function<T>(this: T[], predicate?: (element: T) => boolean): T {
+Array.prototype.first = function <T>(this: T[], predicate?: (element: T) => boolean): T {
     if (this.length < 1) {
         throw Error("The source sequence is empty");
     }
@@ -159,7 +159,7 @@ Array.prototype.first = function<T>(this: T[], predicate?: (element: T) => boole
     throw Error("No element satisfies the condition in predicate");
 };
 
-Array.prototype.firstOrUndefined = function<T>(this: T[], predicate?: (element: T) => boolean): T | undefined {
+Array.prototype.firstOrUndefined = function <T>(this: T[], predicate?: (element: T) => boolean): T | undefined {
     if (this.length < 1) {
         return undefined;
     }
@@ -176,7 +176,7 @@ Array.prototype.firstOrUndefined = function<T>(this: T[], predicate?: (element: 
     return undefined;
 };
 
-Array.prototype.groupBy = function<T, TKey>(keySelector: (element: T) => TKey): Map<TKey, T[]> {
+Array.prototype.groupBy = function <T, TKey>(keySelector: (element: T) => TKey): Map<TKey, T[]> {
     return this.reduce((accumulator: Map<TKey, T[]>, element: T) => {
         const key = keySelector(element);
         const group = accumulator.get(key);
@@ -189,7 +189,7 @@ Array.prototype.groupBy = function<T, TKey>(keySelector: (element: T) => TKey): 
     }, new Map<TKey, T[]>());
 };
 
-Array.prototype.groupJoin = function<T, TInner, TKey, TResult>(
+Array.prototype.groupJoin = function <T, TInner, TKey, TResult>(
     this: T[],
     inner: TInner[],
     outerKeySelector: (element: T) => TKey,
@@ -211,7 +211,7 @@ Array.prototype.groupJoin = function<T, TInner, TKey, TResult>(
     return result;
 };
 
-Array.prototype.innerJoin = function<T, TInner, TKey, TResult>(
+Array.prototype.innerJoin = function <T, TInner, TKey, TResult>(
     this: T[],
     inner: TInner[],
     outerKeySelector: (element: T) => TKey,
@@ -231,11 +231,11 @@ Array.prototype.innerJoin = function<T, TInner, TKey, TResult>(
     return result;
 };
 
-Array.prototype.intersect = function<T>(this: T[], second: T[]) {
+Array.prototype.intersect = function <T>(this: T[], second: T[]) {
     return this.filter((element: T) => second.includes(element));
 };
 
-Array.prototype.last = function<T>(this: T[], predicate?: (element: T) => boolean): T {
+Array.prototype.last = function <T>(this: T[], predicate?: (element: T) => boolean): T {
     if (this.length < 1) {
         throw Error("The source sequence is empty");
     }
@@ -252,7 +252,7 @@ Array.prototype.last = function<T>(this: T[], predicate?: (element: T) => boolea
     throw Error("No element satisfies the condition in predicate");
 };
 
-Array.prototype.lastOrUndefined = function<T>(this: T[], predicate?: (element: T) => boolean): T | undefined {
+Array.prototype.lastOrUndefined = function <T>(this: T[], predicate?: (element: T) => boolean): T | undefined {
     if (this.length < 1) {
         return undefined;
     }
@@ -269,7 +269,7 @@ Array.prototype.lastOrUndefined = function<T>(this: T[], predicate?: (element: T
     return undefined;
 };
 
-Array.prototype.max = function<T>(this: T[], selector?: (element: T) => number): number {
+Array.prototype.max = function <T>(this: T[], selector?: (element: T) => number): number {
     if (this.length < 1) {
         throw new Error("Sequence contains no elements");
     }
@@ -285,7 +285,7 @@ Array.prototype.max = function<T>(this: T[], selector?: (element: T) => number):
           }, Number.MIN_VALUE);
 };
 
-Array.prototype.min = function<T>(this: T[], selector?: (element: T) => number): number {
+Array.prototype.min = function <T>(this: T[], selector?: (element: T) => number): number {
     if (this.length < 1) {
         throw new Error("Sequence contains no elements");
     }
@@ -301,31 +301,31 @@ Array.prototype.min = function<T>(this: T[], selector?: (element: T) => number):
           }, Number.MAX_VALUE);
 };
 
-Array.prototype.orderBy = function<T, TKey>(this: T[], keySelector: (element: T) => TKey): T[] {
+Array.prototype.orderBy = function <T, TKey>(this: T[], keySelector: (element: T) => TKey): T[] {
     return [...this].sort((a: T, b: T) =>
         keySelector(a) < keySelector(b) ? -1 : keySelector(a) > keySelector(b) ? 1 : 0
     );
 };
 
-Array.prototype.orderByDescending = function<T, TKey>(this: T[], keySelector: (element: T) => TKey): T[] {
+Array.prototype.orderByDescending = function <T, TKey>(this: T[], keySelector: (element: T) => TKey): T[] {
     return [...this].sort((a: T, b: T) =>
         keySelector(a) < keySelector(b) ? 1 : keySelector(a) > keySelector(b) ? -1 : 0
     );
 };
 
-Array.prototype.prepend = function<T>(this: T[], element: T): T[] {
+Array.prototype.prepend = function <T>(this: T[], element: T): T[] {
     return [element, ...this];
 };
 
-Array.prototype.reverseImmutable = function<T>(this: T[]): T[] {
+Array.prototype.reverseImmutable = function <T>(this: T[]): T[] {
     return [...this].reverse();
 };
 
-Array.prototype.select = function<T, TResult>(this: T[], selector: (element: T, index: number) => TResult): TResult[] {
+Array.prototype.select = function <T, TResult>(this: T[], selector: (element: T, index: number) => TResult): TResult[] {
     return this.map((value: T, index: number) => selector(value, index));
 };
 
-Array.prototype.selectMany = function<T, TCollection, TResult>(
+Array.prototype.selectMany = function <T, TCollection, TResult>(
     this: T[],
     collectionSelector: (element: T, index: number) => TCollection[],
     resultSelector: (element: T, child: TCollection) => TResult
@@ -335,13 +335,13 @@ Array.prototype.selectMany = function<T, TCollection, TResult>(
             ...accumulator,
             ...collectionSelector(currentValue, currentIndex).map((value: TCollection) =>
                 resultSelector(currentValue, value)
-            )
+            ),
         ],
         []
     );
 };
 
-Array.prototype.sequenceEqual = function<T>(second: T[]): boolean {
+Array.prototype.sequenceEqual = function <T>(second: T[]): boolean {
     if (this === second) {
         return true;
     }
@@ -358,7 +358,7 @@ Array.prototype.sequenceEqual = function<T>(second: T[]): boolean {
     return true;
 };
 
-Array.prototype.single = function<T>(this: T[], predicate?: (element: T) => boolean): T {
+Array.prototype.single = function <T>(this: T[], predicate?: (element: T) => boolean): T {
     if (this.length < 1) {
         throw Error("The source sequence is empty");
     }
@@ -381,7 +381,7 @@ Array.prototype.single = function<T>(this: T[], predicate?: (element: T) => bool
     }
 };
 
-Array.prototype.singleOrUndefined = function<T>(this: T[], predicate?: (element: T) => boolean): T | undefined {
+Array.prototype.singleOrUndefined = function <T>(this: T[], predicate?: (element: T) => boolean): T | undefined {
     if (this.length < 1) {
         return undefined;
     }
@@ -404,15 +404,15 @@ Array.prototype.singleOrUndefined = function<T>(this: T[], predicate?: (element:
     }
 };
 
-Array.prototype.skip = function<T>(this: T[], count: number): T[] {
+Array.prototype.skip = function <T>(this: T[], count: number): T[] {
     return this.slice(count);
 };
 
-Array.prototype.skipLast = function<T>(this: T[], count: number): T[] {
+Array.prototype.skipLast = function <T>(this: T[], count: number): T[] {
     return this.slice(0, this.length - count);
 };
 
-Array.prototype.skipWhile = function<T>(predicate: (element: T) => boolean): T[] {
+Array.prototype.skipWhile = function <T>(predicate: (element: T) => boolean): T[] {
     let i = 0;
     while (i < this.length && predicate(this[i++])) {
         /* tslint:disable:no-empty */
@@ -423,15 +423,15 @@ Array.prototype.skipWhile = function<T>(predicate: (element: T) => boolean): T[]
     return this.slice(i - 1);
 };
 
-Array.prototype.take = function<T>(this: T[], count: number): T[] {
+Array.prototype.take = function <T>(this: T[], count: number): T[] {
     return this.slice(0, count);
 };
 
-Array.prototype.takeLast = function<T>(this: T[], count: number): T[] {
+Array.prototype.takeLast = function <T>(this: T[], count: number): T[] {
     return this.slice(this.length - count, this.length);
 };
 
-Array.prototype.takeWhile = function<T>(predicate: (element: T) => boolean): T[] {
+Array.prototype.takeWhile = function <T>(predicate: (element: T) => boolean): T[] {
     let i = 0;
     while (i < this.length && predicate(this[i++])) {
         /* tslint:disable:no-empty */
@@ -442,7 +442,7 @@ Array.prototype.takeWhile = function<T>(predicate: (element: T) => boolean): T[]
     return this.slice(0, i - 1);
 };
 
-Array.prototype.sum = function<T>(this: T[], selector?: (element: T) => number): number {
+Array.prototype.sum = function <T>(this: T[], selector?: (element: T) => number): number {
     if (this.length < 1) {
         throw new Error("Sequence contains no elements");
     }
@@ -458,7 +458,7 @@ Array.prototype.sum = function<T>(this: T[], selector?: (element: T) => number):
           }, 0);
 };
 
-Array.prototype.toDictionary = function<T, TKey, TElement>(
+Array.prototype.toDictionary = function <T, TKey, TElement>(
     this: T[],
     keySelector: (element: T) => TKey,
     elementSelector: (element: T) => TElement
@@ -466,11 +466,11 @@ Array.prototype.toDictionary = function<T, TKey, TElement>(
     return new Map(this.map((element: T) => [keySelector(element), elementSelector(element)]));
 };
 
-Array.prototype.toHashSet = function<T>(this: T[]): Set<T> {
+Array.prototype.toHashSet = function <T>(this: T[]): Set<T> {
     return new Set(this);
 };
 
-Array.prototype.union = function<T>(this: T[], second: T[]): T[] {
+Array.prototype.union = function <T>(this: T[], second: T[]): T[] {
     return second.reduce(
         (accumulator: T[], currentValue: T) =>
             accumulator.includes(currentValue) ? accumulator : [...accumulator, currentValue],
@@ -478,11 +478,11 @@ Array.prototype.union = function<T>(this: T[], second: T[]): T[] {
     );
 };
 
-Array.prototype.where = function<T>(this: T[], predicate: (element: T) => boolean): T[] {
-    return this.filter(element => predicate(element));
+Array.prototype.where = function <T>(this: T[], predicate: (element: T) => boolean): T[] {
+    return this.filter((element) => predicate(element));
 };
 
-Array.prototype.zip = function<T, TSecond, TResult>(
+Array.prototype.zip = function <T, TSecond, TResult>(
     this: T[],
     second: TSecond[],
     resultSelector: (firstElement: T, secondElement: TSecond) => TResult
