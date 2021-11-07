@@ -35,14 +35,14 @@
     },
     "homepage": "https://github.com/dawidpazik/array-linq",
     "devDependencies": {
-        "@types/jest": "^24.0.18",
-        "istanbul-badges-readme": "^1.0.5",
-        "jest": "^26.4.2",
-        "prettier": "^2.1.1",
-        "ts-jest": "^26.3.0",
+        "@types/jest": "^27.0.2",
+        "istanbul-badges-readme": "^1.6.0",
+        "jest": "^27.3.1",
+        "prettier": "^2.4.1",
+        "ts-jest": "^27.0.7",
         "tslint": "^6.1.3",
         "tslint-config-prettier": "^1.18.0",
-        "typescript": "^4.0.2"
+        "typescript": "^4.4.4"
     },
     "files": [
         "lib/**/*"
