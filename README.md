@@ -12,9 +12,13 @@
 
 ### Usage ###
 
+#### Installation ####
+
 ```sh
 npm install array-linq
 ```
+
+#### Sample ####
 
 ```ts
 import "array-linq"
@@ -27,6 +31,9 @@ array
     .select(x => x.item.value * 10 + x.child.value)
     .average();
 ```
+#### Caveats ####
+
+Keep in mind that this library modifies Array object prototype. If you use other libraries that affect the prototype, conflicts may occur resulting in unexpected behaviour.
 
 ### Available methods ###
 

@@ -1,6 +1,7 @@
 {
     "extends": ["tslint:recommended", "tslint-config-prettier"],
     "rules": {
-        "interface-name": false
+        "interface-name": false,
+        "no-unused-vars": true
     }
 }
