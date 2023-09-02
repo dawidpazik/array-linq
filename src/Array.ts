@@ -1,8 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface Array<T> {
     aggregate<TAccumulate, TResult>(
         seed: TAccumulate,
         func: (accumulator: TAccumulate, element: T) => TAccumulate,
-        resultSelector: (accumulator: TAccumulate) => TResult
+        resultSelector: (accumulator: TAccumulate) => TResult,
     ): TResult;
     all(predicate: (element: T) => boolean): boolean;
     any(predicate: (element: T) => boolean): boolean;
@@ -25,13 +26,13 @@ interface Array<T> {
         inner: TInner[],
         outerKeySelector: (element: T) => TKey,
         innerKeySelector: (innerElement: TInner) => TKey,
-        resultSelector: (element: T, innerElements: TInner[]) => TResult
+        resultSelector: (element: T, innerElements: TInner[]) => TResult,
     ): TResult[];
     innerJoin<TInner, TKey, TResult>(
         inner: TInner[],
         outerKeySelector: (element: T) => TKey,
         innerKeySelector: (innerElement: TInner) => TKey,
-        resultSelector: (element: T, innerElement: TInner) => TResult
+        resultSelector: (element: T, innerElement: TInner) => TResult,
     ): TResult[];
     intersect(second: T[]): T[];
     last(): T;
@@ -49,7 +50,7 @@ interface Array<T> {
     select<TResult>(selector: (element: T, index: number) => TResult): TResult[];
     selectMany<TCollection, TResult>(
         collectionSelector: (element: T, index: number) => TCollection[],
-        resultSelector: (element: T, child: TCollection) => TResult
+        resultSelector: (element: T, child: TCollection) => TResult,
     ): TResult[];
     sequenceEqual(second: T[]): boolean;
     single(): T;
@@ -66,14 +67,14 @@ interface Array<T> {
     sum(selector: (element: T) => number): number;
     toDictionary<TKey, TElement>(
         keySelector: (element: T) => TKey,
-        elementSelector: (element: T) => TElement
+        elementSelector: (element: T) => TElement,
     ): Map<TKey, TElement>;
     toHashSet(): Set<T>;
     union(second: T[]): T[];
     where(predicate: (element: T) => boolean): T[];
     zip<TSecond, TResult>(
         second: TSecond[],
-        resultSelector: (firstElement: T, secondElement: TSecond) => TResult
+        resultSelector: (firstElement: T, secondElement: TSecond) => TResult,
     ): TResult[];
 }
 
@@ -81,7 +82,7 @@ Array.prototype.aggregate = function <T, TAccumulate, TResult>(
     this: T[],
     seed: TAccumulate,
     func: (accumulator: TAccumulate, element: T) => TAccumulate,
-    resultSelector: (accumulator: TAccumulate) => TResult
+    resultSelector: (accumulator: TAccumulate) => TResult,
 ): TResult {
     return resultSelector(this.reduce((accumulator: TAccumulate, element: T) => func(accumulator, element), seed));
 };
@@ -194,7 +195,7 @@ Array.prototype.groupJoin = function <T, TInner, TKey, TResult>(
     inner: TInner[],
     outerKeySelector: (element: T) => TKey,
     innerKeySelector: (innerElement: TInner) => TKey,
-    resultSelector: (element: T, innerElements: TInner[]) => TResult
+    resultSelector: (element: T, innerElements: TInner[]) => TResult,
 ): TResult[] {
     const result = [] as TResult[];
 
@@ -216,7 +217,7 @@ Array.prototype.innerJoin = function <T, TInner, TKey, TResult>(
     inner: TInner[],
     outerKeySelector: (element: T) => TKey,
     innerKeySelector: (innerElement: TInner) => TKey,
-    resultSelector: (element: T, innerElement: TInner) => TResult
+    resultSelector: (element: T, innerElement: TInner) => TResult,
 ): TResult[] {
     const result = [] as TResult[];
 
@@ -303,13 +304,13 @@ Array.prototype.min = function <T>(this: T[], selector?: (element: T) => number)
 
 Array.prototype.orderBy = function <T, TKey>(this: T[], keySelector: (element: T) => TKey): T[] {
     return [...this].sort((a: T, b: T) =>
-        keySelector(a) < keySelector(b) ? -1 : keySelector(a) > keySelector(b) ? 1 : 0
+        keySelector(a) < keySelector(b) ? -1 : keySelector(a) > keySelector(b) ? 1 : 0,
     );
 };
 
 Array.prototype.orderByDescending = function <T, TKey>(this: T[], keySelector: (element: T) => TKey): T[] {
     return [...this].sort((a: T, b: T) =>
-        keySelector(a) < keySelector(b) ? 1 : keySelector(a) > keySelector(b) ? -1 : 0
+        keySelector(a) < keySelector(b) ? 1 : keySelector(a) > keySelector(b) ? -1 : 0,
     );
 };
 
@@ -328,16 +329,16 @@ Array.prototype.select = function <T, TResult>(this: T[], selector: (element: T,
 Array.prototype.selectMany = function <T, TCollection, TResult>(
     this: T[],
     collectionSelector: (element: T, index: number) => TCollection[],
-    resultSelector: (element: T, child: TCollection) => TResult
+    resultSelector: (element: T, child: TCollection) => TResult,
 ): TResult[] {
     return this.reduce(
         (accumulator: TResult[], currentValue: T, currentIndex: number) => [
             ...accumulator,
             ...collectionSelector(currentValue, currentIndex).map((value: TCollection) =>
-                resultSelector(currentValue, value)
+                resultSelector(currentValue, value),
             ),
         ],
-        []
+        [],
     );
 };
 
@@ -461,7 +462,7 @@ Array.prototype.sum = function <T>(this: T[], selector?: (element: T) => number)
 Array.prototype.toDictionary = function <T, TKey, TElement>(
     this: T[],
     keySelector: (element: T) => TKey,
-    elementSelector: (element: T) => TElement
+    elementSelector: (element: T) => TElement,
 ): Map<TKey, TElement> {
     return new Map(this.map((element: T) => [keySelector(element), elementSelector(element)]));
 };
@@ -474,7 +475,7 @@ Array.prototype.union = function <T>(this: T[], second: T[]): T[] {
     return second.reduce(
         (accumulator: T[], currentValue: T) =>
             accumulator.includes(currentValue) ? accumulator : [...accumulator, currentValue],
-        [...new Set(this)]
+        [...new Set(this)],
     );
 };
 
@@ -485,7 +486,7 @@ Array.prototype.where = function <T>(this: T[], predicate: (element: T) => boole
 Array.prototype.zip = function <T, TSecond, TResult>(
     this: T[],
     second: TSecond[],
-    resultSelector: (firstElement: T, secondElement: TSecond) => TResult
+    resultSelector: (firstElement: T, secondElement: TSecond) => TResult,
 ): TResult[] {
     const result = [] as TResult[];
 
