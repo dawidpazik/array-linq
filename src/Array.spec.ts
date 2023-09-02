@@ -304,7 +304,7 @@ describe("array", () => {
             new Map([
                 ["1", [element1, element4]],
                 ["2", [element2, element3]],
-            ])
+            ]),
         );
     });
 
@@ -322,7 +322,7 @@ describe("array", () => {
         const innerKeySelector = (element: { name: string; parent: { name: string; value: number } }) => element.parent;
         const resultSelector = (
             outerElement: { name: string; value: number },
-            innerElements: { name: string; parent: { name: string; value: number } }[]
+            innerElements: { name: string; parent: { name: string; value: number } }[],
         ) => ({ parentName: outerElement.name, childrenNames: innerElements.map((x) => x.name) });
 
         const result = outerArray.groupJoin(innerArray, outerKeySelector, innerKeySelector, resultSelector);
@@ -348,7 +348,7 @@ describe("array", () => {
         const innerKeySelector = (element: { name: string; parent: { name: string; value: number } }) => element.parent;
         const resultSelector = (
             outerElement: { name: string; value: number },
-            innerElement: { name: string; parent: { name: string; value: number } }
+            innerElement: { name: string; parent: { name: string; value: number } },
         ) => ({ parentName: outerElement.name, childName: innerElement.name });
 
         const result = outerArray.innerJoin(innerArray, outerKeySelector, innerKeySelector, resultSelector);
@@ -919,7 +919,7 @@ describe("array", () => {
                 ["2", 20],
                 ["3", 30],
                 ["4", 40],
-            ])
+            ]),
         );
     });
 
